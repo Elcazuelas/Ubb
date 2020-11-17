@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * 
- * @author Julio Monroy (puto)- Camilo Vazques
+ * @author Julio Monroy - Camilo Vazques
  */
 public class UIPrincipal {
     private static UIPrincipal instance;
