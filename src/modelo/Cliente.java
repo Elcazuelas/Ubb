@@ -35,8 +35,8 @@ public class Cliente extends  Rol{
        this.mascota.add(mascota);
     }
     
-    public boolean tieneMascota(){
-        return mascota.get(0) == null;
+    public boolean tieneMascotas(){
+        return mascota.isEmpty();
         }
    }
         
