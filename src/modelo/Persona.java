@@ -6,6 +6,8 @@
 
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Julio Monroy
@@ -17,8 +19,8 @@ public class Persona {
     private String nombre;
     private String email;
     
-    //aosciacion
-    Rol rol;
+    //asociacion
+    ArrayList<Rol> rol;
     
 //constructor
 
@@ -26,6 +28,8 @@ public class Persona {
         this.rut = rut;
         nombre = nom;
         this.email = email;
+        
+        rol=new ArrayList();
     }
     
     public String getRut(){
@@ -41,7 +45,9 @@ public class Persona {
     }
     
     public void agregaRol(Rol rol){
-      this.rol=rol;
+      if(this.rol.size() < 2){ //el if se ocupa para controlar que no se agreguen más de dos roles
+          this.rol.add(rol);
+      }
     }
     
     public boolean equals(Persona other){
