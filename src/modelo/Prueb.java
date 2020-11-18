@@ -22,7 +22,7 @@ public class Prueb {
         
         
         
-         Mascota masc=new Mascota("juni", LocalDate.of(2000, 12, 21),Clase.Ave, "a","raza",client);
+         Mascota masc=new Mascota("juni", LocalDate.of(2000, 11, 21),Clase.Ave, "a","raza",client);
          System.out.println(masc.getEdad());
                 }
 }

@@ -43,8 +43,10 @@ public class Mascota {
     }
 
     public int getEdad(){
-         if(fechaNac.getDayOfMonth() < LocalDate.now().getDayOfMonth()){
+         if(fechaNac.getMonthValue() > LocalDate.now().getMonthValue() || ( fechaNac.getMonthValue() == LocalDate.now().getMonthValue() && fechaNac.getDayOfMonth() > LocalDate.now().getDayOfMonth())){
+             return  LocalDate.now().compareTo(fechaNac) - 1;
          }
+         return  LocalDate.now().compareTo(fechaNac);
     }
 
     public Cliente getDueno(){
