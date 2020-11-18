@@ -26,25 +26,26 @@ public class Mascota {
     private Cliente dueno;
 
     //constructor
-    public Mascota(String nom, LocalDate fNac, Clase clase, String esp, String, raza, Cliente dueno){
-    nombre=nom;
-    fechaNac=fNac;
-    this.clase=clase;
-    especie=esp;
-    this.raza=raza;
+    public Mascota(String nom, LocalDate fNac, Clase clase, String esp, String raza, Cliente dueno){
+        nombre=nom;
+        fechaNac=fNac;
+        this.clase=clase;
+        especie=esp;
+        this.raza=raza;
+    
         this.dueno=dueno;
 
     }
 
     //operaciones
     public String getNombre(){
-    return nombre;
+        return nombre;
     }
 
     public int getEdad(){
-    LocalDate hoy= LocalDate.now();
-    /*if (hoy.isEquals(fechaNac) || fechaNac.isBefore(hoy)){// ajustar segun localdate JULIO PLLS :,D
-    }*/
+         if(fechaNac.getDayOfMonth() < LocalDate.now().getDayOfMonth()){
+         }
+    }
 
     public Cliente getDueno(){
         return dueno;

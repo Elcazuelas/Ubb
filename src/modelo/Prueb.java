@@ -6,6 +6,7 @@
 
 package modelo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -13,14 +14,15 @@ import java.util.ArrayList;
  * @author Julio Monroy - Camilo Vazques
  */
 public class Prueb {
-    public static ArrayList<Veterinario> veterinarios=new ArrayList();
     public static void main(String[] args) {
-        veterinarios.add(new Veterinario(new Persona("213", "Jaun", "juan@gmail.com"), "peo"));
+   
+        Cliente client =new Cliente(new Persona("123","juanito", "a"));
+        System.out.println(client.getPersona().getnombre());
         
-        if(veterinarios.get(0).equals(new Veterinario(new Persona("213", "Jaun", "juan@gmail.com"), "peo"))){         System.out.println("Son iguales");
-            System.out.println("Son iguales");
-        }
         
-    }
-
+        
+        
+         Mascota masc=new Mascota("juni", LocalDate.of(2000, 12, 21),Clase.Ave, "a","raza",client);
+         System.out.println(masc.getEdad());
+                }
 }

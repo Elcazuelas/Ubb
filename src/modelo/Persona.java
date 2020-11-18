@@ -32,6 +32,7 @@ public class Persona {
         rol=new ArrayList();
     }
     
+    //metodos
     public String getRut(){
         return rut;
     }
