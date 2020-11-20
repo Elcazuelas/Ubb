@@ -5,6 +5,9 @@
  */
 package control;
 
+import java.util.ArrayList;
+import modelo.*;
+
 /**
  *
  * @author ignac
@@ -13,20 +16,32 @@ public class Controlador {
     //atributos
     private static Controlador instance;
     
+    //asociaciones
+    ArrayList<Cliente> cliente;
+    ArrayList<Veterinario> veterinario;
+    ArrayList<Mascota> mascota;
+    
     //constructor
-    private class Controlador(){
-        
+    private Controlador(){
+        cliente = new ArrayList();
+        veterinario = new ArrayList();
+        mascota = new ArrayList();
     }
     
-    //operaciones
-    public static Controlador getIntance(){
-        
+    //metodo singlenton
+    public static Controlador getInstance(){
+          if(instance== null){
+            instance= new Controlador();
+        }
+        return instance;
     }
     
+    //atributos
     public void creaCliente(String rut, String nombre, String email){
-        
+        cliente.add(new Cliente(new Persona(rut, nombre, email)));
+        System.out.println(cliente.get(0).getRut());
     }
-    
+    /*
     public void creaVeterinario(String rut, String nombre, string email, String especialidad){
         
     }
@@ -61,7 +76,7 @@ public class Controlador {
     
     private Mascota buscaMascota(String rutCliente, String nombre){
         
-    }
+    }*/
     
 }
 
