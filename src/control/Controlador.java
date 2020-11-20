@@ -39,17 +39,16 @@ public class Controlador {
     //atributos
     public void creaCliente(String rut, String nombre, String email){
         cliente.add(new Cliente(new Persona(rut, nombre, email)));
-        System.out.println(cliente.get(0).getRut());
-    }
-    /*
-    public void creaVeterinario(String rut, String nombre, string email, String especialidad){
-        
+    }//fin crea cliente
+    
+    public void creaVeterinario(String rut, String nombre, String email, String especialidad){
+        veterinario.add(new Veterinario(new Persona(rut, nombre, email), especialidad));
     }
     
     public void creaMascota(String nombre, LocalDate fechaNac, Clase clase, String especie, String raza, String rutDueno){
         
     }
-    
+    /*
     public String[][] listaMascotas(Clase clase){
         
     } 

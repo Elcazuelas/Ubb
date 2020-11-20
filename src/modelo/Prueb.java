@@ -15,26 +15,16 @@ import java.util.ArrayList;
  */
 public class Prueb {
     public static void main(String[] args) {
-        String hola="                                                                              ";
-        Cliente client =new Cliente(new Persona("123","juanito", "a"));
-        System.out.println(client.getPersona().getnombre());
-        
-        
-        
-        
-         Mascota masc=new Mascota("juni", LocalDate.of(2000, 11, 21),Clase.Ave, "a","raza",client);
-         System.out.println(masc.getEdad());
+
          
-         System.out.println(hola.trim().isEmpty());
+         String a="12 13 14";
+         String[] aa= a.split("-");
+         
+         for(String c : aa){
+             System.out.println(c);
+         }
                 }
 }
-        System.out.print("Email: ");
-        email=tdd.next();
-        
-        //valido espacios vacíos
-        if (rut.trim().isEmpty() || nombre.trim().isEmpty() || email.trim().isEmpty() ) {
-            System.out.println("Uno o mas datos son NO validos");
-            return;
-        }else{
-            control.creaCliente(rut, nombre, email);
-        }
+
+2
+1
