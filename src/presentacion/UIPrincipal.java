@@ -150,12 +150,15 @@ public class UIPrincipal {
             }
             
         }else if(rut.split("-")[0].indexOf(".",rut.split("-")[0].indexOf(".") + 1) == rut.split("-")[0].lastIndexOf(".")){ //si tiene puntos entonces verificar que al menos tenga dos
-            System.out.println(rut.split("-")[0].split(".")[0] +" "+ rut.split("-")[0].split(".")[1] );
-            if (!(rut.split("-")[0].split(".")[0].length() < 3 && rut.split("-")[0].split(".")[0].length() > 0 || rut.split("-")[0].split(".")[1].length()==3 || rut.split("-")[0].split(".")[2].length()==3 )) {//el rut se separa en un arreglo donde queda en la posicion 0 todo el string sin el digito y luego se separa en los puntos
-              System.out.println("\n\nUno o mas datos son NO validos\n");
-              return;
+           //validar que los puntos estén bien posicionados
+            if ((rut.split("-")[0].length() - 1 - rut.split("-")[0].lastIndexOf(".")) == 3 &&
+                 (rut.split("-")[0].lastIndexOf(".") - rut.split("-")[0].indexOf(".")-1)==3 && ( rut.split("-")[0].indexOf(".") == 1 ||  rut.split("-")[0].indexOf(".") == 2)   ) {
+              
+                rutSindigito=rut.split("-")[0].replace('.', '0');
+                
             }else{
-                rutSindigito=rut.split("-")[0].split(".")[0]+rut.split("-")[0].split(".")[1]+rut.split("-")[0].split(".")[2];
+            System.out.println("\n\nUno o mas datos son NO validos\n");
+             return;
             }
             
         }else{
