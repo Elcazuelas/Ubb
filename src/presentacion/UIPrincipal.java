@@ -15,14 +15,14 @@ import java.util.Scanner;
 public class UIPrincipal {
     //atributos
     private static UIPrincipal instance;
-    private Scanner tdd;
+    private Scanner tcld;
     
     //asociacion
     Controlador control;
     
     //constructor 
     private UIPrincipal(){
-        tdd=new Scanner(System.in);
+        tcld=new Scanner(System.in);
         control=Controlador.getInstance();
     }
     
@@ -60,7 +60,7 @@ public class UIPrincipal {
             System.out.println("9.  Listar datos y nro.atenciones de cada veterinario");
             System.out.println("10. Salir");
             System.out.print("\tIngrese opcion: ");
-            opcion=tdd.nextLine();
+            opcion=tcld.nextLine();
             
             switch (opcion.trim()){//solo para que tome el valor ingresado sin importar espacios
                 case "1":
@@ -105,79 +105,85 @@ public class UIPrincipal {
     }
 
     private void creaCliente() {
-        System.out.println("\nCreando un nuevo cliente...");
-        //ingreso de datos
-        /*Para poder dar la opción a una persona de ingresar un blanco en alguno de los datos se optó por usar next Line*/
-       String rut, nombre, email;
-        System.out.print("Rut: ");
-        rut=tdd.nextLine().trim();
-        System.out.print("Nombre: ");
-        nombre=tdd.nextLine().trim();
-        System.out.print("Email: ");
-        email=tdd.nextLine().trim();
+        try {
+            
+            System.out.println("\nCreando un nuevo cliente...");
+            //ingreso de datos
+            /*Para poder dar la opción a una persona de ingresar un blanco en alguno de los datos se optó por usar next Line*/
+            String rut, nombre, email;
+            System.out.print("Rut: ");
+            rut=tcld.nextLine().trim();
+            System.out.print("Nombre: ");
+            nombre=tcld.nextLine().trim();
+            System.out.print("Email: ");
+            email=tcld.nextLine().trim();
         
         //valido espacios vacíos
-        if (rut.isEmpty()|| rut.indexOf(" ")!=-1 || rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
-                nombre.isEmpty() || //validar si nombre está vacio
-                email.isEmpty() || email.indexOf(" ")!=-1 ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
-                !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@")) || email.endsWith(".") || email.indexOf(".",email.indexOf("@")) != email.lastIndexOf(".") ) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
+         if (rut.isEmpty()|| rut.indexOf(" ")!=-1 || rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
+                    nombre.isEmpty() || //validar si nombre está vacio
+                    email.isEmpty() || email.indexOf(" ")!=-1 ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
+                    !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@")) || email.endsWith(".") || email.indexOf(".",email.indexOf("@")) != email.lastIndexOf(".") ) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
             
-            System.out.println("\n\nUno o mas datos son NO validos\n");
-            return;
-        }
-        
-        //validar Rut termina de 0-9 o k
-        boolean verificador=false;                       
-        for(int i=0 ; i < 10; i++){
-            if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
-                verificador=true;
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                return;
             }
-        }
-        if (!verificador) {
-             System.out.println("\n\nUno o mas datos son NO validos\n");
-              return;
-        }
         
-        //validar que el rut tenga el tamaño necesario
-        String rutSindigito;
-        if (rut.split("-")[0].indexOf(".")==-1) {//verificar si el rut no tiene puntos
-            
-            if (rut.split("-")[0].length() != 7 && rut.split("-")[0].length() != 8 ) {//verificar que tenga la cantidad necesaria de numeros
-              System.out.println("\n\nUno o mas datos son NO validos\n");
-              return;
-            }else{
-                rutSindigito=rut.split("-")[0];
+            //validar Rut termina de 0-9 o k
+            boolean verificador=false;                       
+            for(int i=0 ; i < 10; i++){
+    if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
+                    verificador=true;
+                }
             }
+            if (!verificador) {
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                return;
+         }
+        
+            //validar que el rut tenga el tamaño necesario
+            String rutSindigito;
+            if (rut.split("-")[0].indexOf(".")==-1) {//verificar si el rut no tiene puntos
             
-        }else if(rut.split("-")[0].indexOf(".",rut.split("-")[0].indexOf(".") + 1) == rut.split("-")[0].lastIndexOf(".")){ //si tiene puntos entonces verificar que al menos tenga dos
-           //validar que los puntos estén bien posicionados
-            if ((rut.split("-")[0].length() - 1 - rut.split("-")[0].lastIndexOf(".")) == 3 &&
-                 (rut.split("-")[0].lastIndexOf(".") - rut.split("-")[0].indexOf(".")-1)==3 && ( rut.split("-")[0].indexOf(".") == 1 ||  rut.split("-")[0].indexOf(".") == 2)   ) {
+                if (rut.split("-")[0].length() != 7 && rut.split("-")[0].length() != 8 ) {//verificar que tenga la cantidad necesaria de numeros
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                return;
+                }else{
+                    rutSindigito=rut.split("-")[0];
+                }
+            
+            }else if(rut.split("-")[0].indexOf(".",rut.split("-")[0].indexOf(".") + 1) == rut.split("-")[0].lastIndexOf(".")){ //si tiene puntos entonces verificar que al menos tenga dos
+            //validar que los puntos estén bien posicionados
+                if ((rut.split("-")[0].length() - 1 - rut.split("-")[0].lastIndexOf(".")) == 3 &&
+                     (rut.split("-")[0].lastIndexOf(".") - rut.split("-")[0].indexOf(".")-1)==3 && ( rut.split("-")[0].indexOf(".") == 1 ||  rut.split("-")[0].indexOf(".") == 2)   ) {
               
-                rutSindigito=rut.split("-")[0].replace('.', '0');
+                    rutSindigito=rut.split("-")[0].replace('.', '0');
                 
-            }else{
-            System.out.println("\n\nUno o mas datos son NO validos\n");
-             return;
-            }
+                }else{
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                 return;
+                }
             
-        }else{
-            System.out.println("\n\nUno o mas datos son NO validos\n");
-             return;
-        }
+            }else{
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                return;
+            }
         
         //validar que el rut sin digitos sean numeros
-        try {
-            Integer.parseInt(rutSindigito);
-        } catch (NumberFormatException e) {
-             System.out.println("\n\nUno o mas datos son NO validos\n");
-             return;
+            try {
+                Integer.parseInt(rutSindigito);
+            } catch (NumberFormatException e) {
+                 System.out.println("\n\nUno o mas datos son NO validos\n");
+                 return;
+            }
+        
+        
+                //se confirma que los datos estan buenos ;)
+             control.creaCliente(rut, nombre, email);
+             System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");
+       
+        } catch (Exception e) {
         }
         
-        
-            //se confirma que los datos estan buenos ;)
-            control.creaCliente(rut, nombre, email);
-            System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");
     }//fin crea cliente
 
     private void creaVeterinario() {
@@ -186,17 +192,17 @@ public class UIPrincipal {
         //ingreso de datos
        String rut, nombre, email, especialidad;
         System.out.print("Rut: ");
-        rut=tdd.next();
+        rut=tcld.next();
         
         //para poder  ocupar el "nextLine" a la hora de ingresar el nombre se usa el "skip("\n") para consumir el enter guardado anteriormente" 
 
         
         System.out.print("Nombre: ");
-        nombre=tdd.skip("\n").nextLine();
+        nombre=tcld.skip("\n").nextLine();
         System.out.print("Email: ");
-        email=tdd.next();
+        email=tcld.next();
         System.out.print("Especialidad: ");
-        especialidad = tdd.next();
+        especialidad = tcld.next();
         
         //valido espacios vacíos
         if (rut.trim().isEmpty() || nombre.trim().isEmpty() || email.trim().isEmpty() || especialidad.trim().isEmpty()) {
