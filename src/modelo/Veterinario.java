@@ -18,12 +18,12 @@ public class Veterinario extends Rol{
         this.especialidad=especialidad;
     }
     
-    public String especialidad(){
+    public String getEspecialidad(){
         return especialidad;
     }
     
     public boolean equals(Veterinario other){
-        return this.getPersona().equals(other.getPersona()) && this.especialidad().equalsIgnoreCase(other.especialidad);
+        return this.getPersona().equals(other.getPersona()) && this.getEspecialidad().equalsIgnoreCase(other.especialidad);
     }
   
     

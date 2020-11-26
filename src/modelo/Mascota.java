@@ -1,20 +1,20 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-
-enum Clase{
-    Ave,
-    Mamifero,
-    Pez,
-    Reptil
-}
-
 /**
  *
  * @author Julio Monroy
  * @author Camilo Vazques 
  */
-public class Mascota {
+public enum Clase{
+    Ave,
+    Mamifero,
+    Pez,
+    Reptil;
+}
+
+public class Mascota implements Serializable {
     //atributos
     private String nombre;
     private LocalDate fechaNac;  //creo que falta algo
@@ -34,7 +34,7 @@ public class Mascota {
         this.raza=raza;
     
         this.dueno=dueno;
-
+        this.dueno.agregaMascota(this);
     }
 
     //operaciones

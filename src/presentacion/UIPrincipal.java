@@ -22,7 +22,7 @@ public class UIPrincipal {
     
     //constructor 
     private UIPrincipal(){
-        tcld=new Scanner(System.in);
+         tcld=new Scanner(System.in).useDelimiter("");
         control=Controlador.getInstance();
     }
     
@@ -112,16 +112,16 @@ public class UIPrincipal {
             /*Para poder dar la opción a una persona de ingresar un blanco en alguno de los datos se optó por usar next Line*/
             String rut, nombre, email;
             System.out.print("Rut: ");
-            rut=tcld.nextLine().trim();
+            rut=tcld.next().trim();
             System.out.print("Nombre: ");
             nombre=tcld.nextLine().trim();
             System.out.print("Email: ");
-            email=tcld.nextLine().trim();
+            email=tcld.next().trim();
         
         //valido espacios vacíos
-         if (rut.isEmpty()|| rut.indexOf(" ")!=-1 || rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
+         if (rut.isEmpty()|| rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
                     nombre.isEmpty() || //validar si nombre está vacio
-                    email.isEmpty() || email.indexOf(" ")!=-1 ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
+                    email.isEmpty() ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
                     !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@")) || email.endsWith(".") || email.indexOf(".",email.indexOf("@")) != email.lastIndexOf(".") ) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
             
                 System.out.println("\n\nUno o mas datos son NO validos\n");
@@ -198,7 +198,7 @@ public class UIPrincipal {
 
         
         System.out.print("Nombre: ");
-        nombre=tcld.skip("\n").nextLine();
+        nombre=tcld.nextLine();
         System.out.print("Email: ");
         email=tcld.next();
         System.out.print("Especialidad: ");

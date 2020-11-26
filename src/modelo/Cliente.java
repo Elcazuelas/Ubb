@@ -23,12 +23,8 @@ public class Cliente extends  Rol{
     }
     
     //metodos
-    public Mascota[] mascota(){
-        Mascota[] masco = new Mascota[mascota.size()];
-        for(int i = 0 ;  i< mascota.size() ; i++){
-            masco[i]=mascota.get(i);
-        }
-        return masco;
+    public Mascota[] getMascota(){
+        return  mascota.toArray(new Mascota[0]);
     }
     
     public void agregaMascota(Mascota mascota){

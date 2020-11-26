@@ -6,11 +6,13 @@
 
 package modelo;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Julio Monroy - Camilo Vazques
  */
-public class Rol {
+public class Rol implements Serializable {
     //asocicion
     private Persona persona;
    

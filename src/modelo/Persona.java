@@ -6,6 +6,7 @@
 
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * @author Julio Monroy
  * @author Camilo Vazques 
  */
-public class Persona {
+public class Persona implements Serializable {
     //atributos
     private String rut;
     private String nombre;
