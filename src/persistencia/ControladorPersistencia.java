@@ -8,7 +8,6 @@ package persistencia;
 
 import excepciones.RegistroAtencionesException;
 import java.io.EOFException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -88,10 +87,9 @@ public class ControladorPersistencia {
         
         ObjectOutputStream archivo = null;
         try {
-            File file = new File("Clientes.obj");
-            archivo = new ObjectOutputStream(new FileOutputStream(file, false));
-            for (int i = 0; i < clientes.length; i++) {
-                archivo.writeObject(clientes[i]);
+            archivo = new ObjectOutputStream(new FileOutputStream("Clientes.obj"));
+            for (Cliente cliente : clientes) {
+                archivo.writeObject(cliente);
             }
         } catch (FileNotFoundException ex) {
             throw new RegistroAtencionesException("Problemas al abrir el archivo Clientes.obj");
@@ -110,9 +108,9 @@ public class ControladorPersistencia {
         
         ObjectOutputStream archivo = null;
         try {
-            archivo = new ObjectOutputStream(new FileOutputStream("Veterinarios.obj", false));
-            for (int i = 0; i < vets.length; i++) {
-                archivo.writeObject(vets[i]);    
+            archivo = new ObjectOutputStream(new FileOutputStream("Veterinarios.obj"));
+            for (Veterinario vet : vets) {
+                archivo.writeObject(vet);    
             }
         } catch (FileNotFoundException ex) {
             throw new RegistroAtencionesException("Problemas al abrir el archivo Veterinarios.obj");
