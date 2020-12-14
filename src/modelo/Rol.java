@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 
  * @author Julio Monroy - Camilo Vazques
  */
-public class Rol implements Serializable {
+public abstract class Rol implements Serializable {
     //asocicion
     private Persona persona;
    

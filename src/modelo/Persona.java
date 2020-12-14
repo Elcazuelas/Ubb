@@ -20,16 +20,14 @@ public class Persona implements Serializable {
     private String nombre;
     private String email;
     
-    //asociacion
+    //Relacion
     ArrayList<Rol> rol;
     
-//constructor
-
+    //constructor
     public Persona(String rut, String nom, String email) {
         this.rut = rut;
         nombre = nom;
         this.email = email;
-        
         rol=new ArrayList();
     }
     

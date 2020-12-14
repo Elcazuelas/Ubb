@@ -6,9 +6,9 @@
 package control;
 
 import excepciones.RegistroAtencionesException;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import modelo.*;
 import persistencia.ControladorPersistencia;
 
@@ -117,15 +117,10 @@ public class Controlador {
         Cliente[] clienteArr = cPersistencia. leeClientes();
         for (Cliente cliente : clienteArr) {
             clientes.add(cliente);
-            for (Mascota mascota : cliente.getMascota()) {
-                mascotas.add(mascota);
-            }
+            mascotas.addAll(Arrays.asList(cliente.getMascota()));
         }
         //agrega vets
-        Veterinario[] vets = cPersistencia.leeVeterinario();
-        for (Veterinario vet : vets) {
-            veterinarios.add(vet);
-        }
+        veterinarios.addAll(Arrays.asList(cPersistencia.leeVeterinario()));
         
     }
     

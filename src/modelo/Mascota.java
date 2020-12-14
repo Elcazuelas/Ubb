@@ -7,12 +7,7 @@ import java.time.LocalDate;
  * @author Julio Monroy
  * @author Camilo Vazques 
  */
-public enum Clase{
-    Ave,
-    Mamifero,
-    Pez,
-    Reptil;
-}
+
 
 public class Mascota implements Serializable {
     //atributos
