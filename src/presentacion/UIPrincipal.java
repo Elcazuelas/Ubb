@@ -10,8 +10,6 @@ import excepciones.RegistroAtencionesException;
 import static modelo.Clase.*;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Clase;
 
 /**
@@ -57,7 +55,7 @@ public class UIPrincipal {
             }finally{
                 tcld.useDelimiter("\n");
             }
-    } //listo
+    } 
     
     private void menuMain(){
         int opcion=0;
@@ -120,7 +118,7 @@ public class UIPrincipal {
                 System.out.println("\nElija una opcion valida\n");
             }
         }while(opcion != 10);
-    }//listo
+    }
 
     private void creaCliente() {
        String rut, nombre, email;
@@ -136,88 +134,11 @@ public class UIPrincipal {
             email=tcld.next().trim();
         
                 //valido espacios vacíos
-            if (!(rut.isEmpty()|| rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
-                nombre.isEmpty() || //validar si nombre está vacio
-                email.isEmpty() ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
-                !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@"))) || email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
-            
-                //validar Rut termina de 0-9 o k
-                boolean verificador=false;                       
-                for(int i=0 ; i < 10; i++){
-                    if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
-                        verificador=true;
-                    }
-                }
-                if (verificador) {
-                    //ponerle puntos al rut si es que no los tiene
-                    if (rut.indexOf(".")==-1 && (rut.length() == 9 || rut.length() == 10)){  
-                        if (rut.length() == 9){
-                            rut = rut.substring(0,1) + "." + rut.substring(1,4) + "." + rut.substring(4);
-                        }else if(rut.length() == 10){
-                            rut= rut.substring(0,2) + "." + rut.substring(2,5) + "." + rut.substring(5);
-                        }
-                    }
-                    //probar si los digitos son números
-                    if((rut.indexOf(".",rut.indexOf(".") + 1) == rut.lastIndexOf(".")) && (rut.indexOf(".")== 1 || rut.indexOf(".")== 2) && (rut.lastIndexOf(".")== 6 || rut.lastIndexOf(".")== 5)){ //si tiene puntos entonces verificar que al menos tenga dos
-                        Integer.parseInt(rut.split("-")[0].replace('.', '0'));
-                    }else{
-                        System.out.println("\n\nUno o mas datos son NO validos\n");
-                        return;
-                    } 
-                }else{
-                    System.out.println("\n\nUno o mas datos son NO validos\n");
-                    return;
-                }
-                 //verificar que nombre no contenga caracteres invalidos
-                for (int i = 0; i < nombre.length(); i++) {
-                    char c = nombre.charAt(i);
-                    // Si no está entre a y z, ni entre A y Z, ni es un espacio
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
-                        System.out.println("\n\nUno o mas datos son NO validos\n");
-                        return;
-                    }
-                }
-            }else{
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
-            //se confirma que los datos estan buenos ;)
-            control.creaCliente(rut, nombre, email);
-            System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");
-       
-        }catch (NumberFormatException e) {
-            System.out.println("\n\nUno o mas datos son NO validos\n");
-        } 
-        catch (RegistroAtencionesException e) {
-            System.out.println(e.getMessage());
-        }
-    }//fin crea cliente
-
-    private void creaVeterinario(){                                            
-        try {                                    //preguntar julio solo valido espacios vacios
-            System.out.println("\nCreando un nuevo veterinario...");
-        
-            //Datos
-            String rut, nombre, email, especialidad;
-        
-            //ingreso de datos
-            System.out.print("Rut: ");
-            rut=tcld.next().trim();
-            System.out.print("Nombre: ");
-            nombre=tcld.next().trim();
-            System.out.print("Email: ");
-            email=tcld.next().trim();
-            System.out.print("Especialidad: ");
-            especialidad = tcld.next().trim();
-        
             if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-")
                     && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
-                    !nombre.isEmpty()
-                    &&
-                    !especialidad.isEmpty()
+                    !nombre.isEmpty() && nombre !=null
                     && //validar si nombre está vacio
-                    !email.isEmpty() && email.indexOf("@") == email.lastIndexOf("@")
+                    !email.isEmpty() && email!=null && email.indexOf("@") == email.lastIndexOf("@")
                     && //validar si email está vacio o tiene solo un @ o está mal posicionado
                     email.lastIndexOf(".") > email.indexOf("@") && email.lastIndexOf(".") - 1 != email.indexOf("@") && !email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
                     
@@ -248,15 +169,76 @@ public class UIPrincipal {
                     System.out.println("\n\nUno o mas datos son NO validos\n");
                     return;
                 }
-                //verificar que nombre y especialidad no contenga caracteres invalidos
-                String nomEspecialidad = nombre + especialidad; 
-                for (int i = 0; i < nomEspecialidad.length(); i++) {
-                    char c = nomEspecialidad.charAt(i);
-                    // Si no está entre a y z, ni entre A y Z, ni es un espacio
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {//no funciona con ñ
+            } else {
+                System.out.println("\n\nUno o mas datos son NO validos\n");
+                return;
+            }
+        
+            //se confirma que los datos estan buenos ;)
+            control.creaCliente(rut, nombre, email);
+            System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");
+       
+        }catch (NumberFormatException e) {
+            System.out.println("\n\nUno o mas datos son NO validos\n");
+        } 
+        catch (RegistroAtencionesException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void creaVeterinario(){                                            
+        try {                                    //preguntar julio solo valido espacios vacios
+            System.out.println("\nCreando un nuevo veterinario...");
+        
+            //Datos
+            String rut, nombre, email, especialidad;
+        
+            //ingreso de datos
+            System.out.print("Rut: ");
+            rut=tcld.next().trim();
+            System.out.print("Nombre: ");
+            nombre=tcld.next().trim();
+            System.out.print("Email: ");
+            email=tcld.next().trim();
+            System.out.print("Especialidad: ");
+            especialidad = tcld.next().trim();
+        
+            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-") && rut != null
+                    && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
+                    !nombre.isEmpty() && nombre != null
+                    &&
+                    !especialidad.isEmpty() && especialidad != null
+                    && //validar si nombre está vacio
+                    !email.isEmpty() && email != null && email.indexOf("@") == email.lastIndexOf("@")
+                    && //validar si email está vacio o tiene solo un @ o está mal posicionado
+                    email.lastIndexOf(".") > email.indexOf("@") && email.lastIndexOf(".") - 1 != email.indexOf("@") && !email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
+                    
+                //validar Rut termina de 0-9 o k
+                boolean verificador = false;
+                for (int i = 0; i < 10; i++) {
+                    if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
+                        verificador = true;
+                    }
+                }
+                if (verificador) {
+                    //ponerle puntos al rut si es que no los tiene
+                    if (rut.indexOf(".") == -1 && (rut.length() == 9 || rut.length() == 10)) {
+                        if (rut.length() == 9) {
+                            rut = rut.substring(0, 1) + "." + rut.substring(1, 4) + "." + rut.substring(4);
+                        } else if (rut.length() == 10) {
+                            rut = rut.substring(0, 2) + "." + rut.substring(2, 5) + "." + rut.substring(5);
+                        }
+                    }
+                    //probar si los digitos son números
+                    if ((rut.indexOf(".", rut.indexOf(".") + 1) == rut.lastIndexOf(".")) && (rut.indexOf(".") == 1 || rut.indexOf(".") == 2) && (rut.lastIndexOf(".") == 6 || rut.lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
+                        Integer.parseInt(rut.split("-")[0].replace('.', '0'));
+                    } else {
                         System.out.println("\n\nUno o mas datos son NO validos\n");
                         return;
                     }
+                } else {
+                    System.out.println("\n\nUno o mas datos son NO validos\n");
+                    return;
                 }
             } else {
                 System.out.println("\n\nUno o mas datos son NO validos\n");
@@ -292,24 +274,10 @@ public class UIPrincipal {
             System.out.print("Raza: ");
             raza=tcld.next().trim();
         
-            if (clase!=null || fecha !=null){    //se verifica de que datos clase y fecha no esten vacios
-                String[] verificar = new String[3];
-                verificar[0] = nombre;
-                verificar[1] = especie;
-                verificar[2] = raza;
-                //verificar que nombre, especie y raza no contenga caracteres invalidos
-                for (String Averificar : verificar) {
-                        for (int i = 0; i < Averificar.length(); i++) {
-                        char c = nombre.charAt(i);
-                        // Si no está entre a y z, ni entre A y Z, ni es un espacio
-                        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
-                            System.out.println("\n\nUno o mas datos son NO validos\n");
-                            return;
-                        }
-                    }   
-                }
+            if (clase!=null && fecha !=null && nombre!=null && especie!=null && raza!=null 
+                    && !(nombre.equals("") && especie.equals("") && raza.equals(""))){    //se verifica de que datos clase y fecha no esten vacios
                 //valida rut
-                 if (!rutDueno.isEmpty() && rutDueno.indexOf("-") == rutDueno.lastIndexOf("-")) {
+                 if (!rutDueno.isEmpty() && rutDueno.indexOf("-") == rutDueno.lastIndexOf("-") && rutDueno != null) {
                     boolean verificador = false;
                     for (int i = 0; i < 10; i++) {
                         if (rutDueno.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rutDueno.split("-")[1].equalsIgnoreCase("k")) {
@@ -349,7 +317,6 @@ public class UIPrincipal {
             System.out.println(e.getMessage());
         }    
     }
-    
         
     private void listaMascotasDeUnaClase(){ //imprimir String[][] que viene listo
         
@@ -364,7 +331,7 @@ public class UIPrincipal {
         if (clase!=null){    //se verifica de que datos clase no este vacio
             lista=control.listaMascotas(clase);
             if (lista.length!=0) {
-                //imprimo la cabecera (ojo la ortografia)
+                //imprimo la cabecera
                 System.out.println("\nListado Mascotas de la Clase " + clase);
                 System.out.println("--------------------------------" + ((clase==Reptil)? "---":((clase==Mamifero)? "-----":" ")));
                 System.out.print("\nNombre        \tEspecie        \tRaza           \tEdad(anios)    \tNombre dueno");
@@ -426,62 +393,56 @@ public class UIPrincipal {
         }
     }
     
-    // ver si esta bien
     private Clase leeClase(){
         String clas;
-        
+
         //ingreso clase
         System.out.print("Clase (Ave, Mamifero, Pez, Reptil): ");
-        clas=tcld.next().trim();
-        
-        if (clas.equalsIgnoreCase("ave")){              //evalua si es ave, de ser asi se le da el valor correspondiente
+        clas = tcld.next().trim();
+
+        if (clas.equalsIgnoreCase("ave")) {              //evalua si es ave, de ser asi se le da el valor correspondiente
             return Ave;
-            
-        }else if(clas.equalsIgnoreCase("mamifero")){    //evalua si es mamifero, de ser asi se le da el valor correspondiente   
+        } else if (clas.equalsIgnoreCase("mamifero")) {    //evalua si es mamifero, de ser asi se le da el valor correspondiente   
             return Mamifero;
-            
-        }else if(clas.equalsIgnoreCase("pez")){         //evalua si es pez, de ser asi se le da el valor correspondiente
+        } else if (clas.equalsIgnoreCase("pez")) {         //evalua si es pez, de ser asi se le da el valor correspondiente
             return Pez;
-            
-        }else if(clas.equalsIgnoreCase("reptil")){      //evalua si es reptil, de ser asi se le da el valor correspondiente
+        } else if (clas.equalsIgnoreCase("reptil")) {      //evalua si es reptil, de ser asi se le da el valor correspondiente
             return Reptil;
-            
         }
-        return null;        
-    }
-    
-    private LocalDate leeFecha(){
-        
-    //inicio datos de fechas
-    int mes, año, dia;
-    String fecha;
-    LocalDate fechaNac;
-    
-    // ingreso datos
-    System.out.print("Fecha de nacimiento de la mascota (dd/mm/aaaa): ");
-    fecha=tcld.next().trim();
-    
-    //validar si los "/" estan bien posicionados y tiene el formato correcto
-    if ((fecha.indexOf("/")) == 2 &&
-        (fecha.lastIndexOf("/") - fecha.indexOf("/"))==3 &&
-        (fecha.length() - 1 - fecha.lastIndexOf("/")) == 4){
-        
-        try{
-            
-        dia=Integer.parseInt(fecha.split("/")[0]);
-        mes=Integer.parseInt(fecha.split("/")[1]);
-        año=Integer.parseInt(fecha.split("/")[2]);
-        }catch(NumberFormatException e){
-            //devolver error
-            return null;
-        }
-        
-        fechaNac=LocalDate.of(año, mes, dia);
-        
-    }else{
         return null;
     }
     
-    return fechaNac;
-    }      
+    private LocalDate leeFecha() {
+
+        //inicio datos de fechas
+        int mes, año, dia;
+        String fecha;
+        LocalDate fechaNac;
+
+        // ingreso datos
+        System.out.print("Fecha de nacimiento de la mascota (dd/mm/aaaa): ");
+        fecha = tcld.next().trim();
+
+        //validar si los "/" estan bien posicionados y tiene el formato correcto11/11/
+        if ((fecha.indexOf("/") == 2 || fecha.indexOf("/") == 1)
+                && (fecha.lastIndexOf("/")==5 || fecha.lastIndexOf("/")== 4 || fecha.lastIndexOf("/")== 3 )
+                && ((fecha.indexOf("/",fecha.indexOf("/") + 1) == fecha.lastIndexOf("/")))){
+            try {
+
+                dia = Integer.parseInt(fecha.split("/")[0]);
+                mes = Integer.parseInt(fecha.split("/")[1]);
+                año = Integer.parseInt(fecha.split("/")[2]);
+            } catch (NumberFormatException e) {
+                //devolver error
+                return null;
+            }
+
+            fechaNac = LocalDate.of(año, mes, dia);
+
+        } else {
+            return null;
+        }
+
+        return fechaNac;
+    }
 }
