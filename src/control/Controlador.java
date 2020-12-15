@@ -14,7 +14,8 @@ import persistencia.ControladorPersistencia;
 
 /**
  *
- * @author ignac
+ * @author Julio Ignacio Monroy San Martin
+ * @author Camilo Ignacio Vazques Rodriguez
  */
 public class Controlador {
     //atributos
@@ -52,7 +53,7 @@ public class Controlador {
                 clientes.add(new Cliente(new Persona(rut, nombre, email)));
             }
         }else{
-            throw new RegistroAtencionesException("El cliente ya existe");
+            throw new RegistroAtencionesException("Ya existe cliente con el rut dado");
         }
         
     }//fin crea cliente
@@ -66,7 +67,7 @@ public class Controlador {
                 veterinarios.add(new Veterinario(new Persona(rut, nombre, email), especialidad));
             }
         }else{
-            throw new RegistroAtencionesException("El veterinario ya existe");
+            throw new RegistroAtencionesException("Ya existe veterinario con el rut dado");
         }
         
     }
@@ -80,7 +81,7 @@ public class Controlador {
                 throw new RegistroAtencionesException("El cliente ya tiene una mascota con el mismo nombre");
             }
         }else{
-            throw new RegistroAtencionesException("El cliente no existe");
+            throw new RegistroAtencionesException("No existe cliente con el rut dado");
         }
     }
     
@@ -149,7 +150,7 @@ public class Controlador {
     }
     
     private Mascota buscaMascota(String rutCliente, String nombre){
-        Cliente cliente = buscaCliente(nombre);
+        Cliente cliente = buscaCliente(rutCliente);
         if (cliente != null) {
             if (cliente.getMascota().length > 0) {
                 for (Mascota mascota : cliente.getMascota()) {

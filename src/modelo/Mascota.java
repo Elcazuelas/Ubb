@@ -2,17 +2,18 @@ package modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+
 /**
  *
  * @author Julio Monroy
- * @author Camilo Vazques 
+ * @author Camilo Vazques
  */
 
-
 public class Mascota implements Serializable {
+
     //atributos
     private String nombre;
-    private LocalDate fechaNac;  //creo que falta algo
+    private LocalDate fechaNac;
     private Clase clase;
     private String especie;
     private String raza;
@@ -21,19 +22,18 @@ public class Mascota implements Serializable {
     private Cliente dueno;
 
     //constructor
-    public Mascota(String nom, LocalDate fNac, Clase clase, String esp, String raza, Cliente dueno){
-        nombre=nom;
-        fechaNac=fNac;
-        this.clase=clase;
-        especie=esp;
-        this.raza=raza;
-    
-        this.dueno=dueno;
+    public Mascota(String nom, LocalDate fNac, Clase clase, String esp, String raza, Cliente dueno) {
+        nombre = nom;
+        fechaNac = fNac;
+        this.clase = clase;
+        especie = esp;
+        this.raza = raza;
+        this.dueno = dueno;
         this.dueno.agregaMascota(this);
     }
 
-    //operaciones
-    public String getNombre(){
+    //metodos
+    public String getNombre() {
         return nombre;
     }
 
@@ -42,25 +42,25 @@ public class Mascota implements Serializable {
             return 0;
         } else if (fechaNac.getMonthValue() > LocalDate.now().getMonthValue()
                 || (fechaNac.getMonthValue() == LocalDate.now().getMonthValue()
-                && fechaNac.getDayOfMonth() > LocalDate.now().getDayOfMonth())){
+                && fechaNac.getDayOfMonth() > LocalDate.now().getDayOfMonth())) {
             return LocalDate.now().compareTo(fechaNac) - 1;
         }
         return LocalDate.now().compareTo(fechaNac);
     }
 
-    public Cliente getDueno(){
+    public Cliente getDueno() {
         return dueno;
     }
 
-    public Clase getClase(){
+    public Clase getClase() {
         return clase;
     }
 
-    public String getEspecie(){
-       return especie;
+    public String getEspecie() {
+        return especie;
     }
 
-    public String getRaza(){
-    return raza;
+    public String getRaza() {
+        return raza;
     }
 }
