@@ -136,60 +136,53 @@ public class UIPrincipal {
             email=tcld.next().trim();
         
                 //valido espacios vacíos
-            if (rut.isEmpty()|| rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
+            if (!(rut.isEmpty()|| rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
                 nombre.isEmpty() || //validar si nombre está vacio
                 email.isEmpty() ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
-                !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@")) || email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
+                !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@"))) || email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
             
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
                 //validar Rut termina de 0-9 o k
-            boolean verificador=false;                       
-            for(int i=0 ; i < 10; i++){
-                if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
-                    verificador=true;
+                boolean verificador=false;                       
+                for(int i=0 ; i < 10; i++){
+                    if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
+                        verificador=true;
+                    }
                 }
-            }
-            if (!verificador) {
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
-            //validar que el rut tenga el tamaño necesario
-            String rutSindigito;
-            if (rut.split("-")[0].indexOf(".")==-1) {//verificar si el rut no tiene puntos
-            
-                if (rut.split("-")[0].length() != 7 && rut.split("-")[0].length() != 8 ) {//verificar que tenga la cantidad necesaria de numeros
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-                }else{
-                    rutSindigito=rut.split("-")[0];
-                }
-            
-            }else if(rut.split("-")[0].indexOf(".",rut.split("-")[0].indexOf(".") + 1) == rut.split("-")[0].lastIndexOf(".")){ //si tiene puntos entonces verificar que al menos tenga dos
-            //validar que los puntos estén bien posicionados
-                if ((rut.split("-")[0].length() - 1 - rut.split("-")[0].lastIndexOf(".")) == 3 &&
-                     (rut.split("-")[0].lastIndexOf(".") - rut.split("-")[0].indexOf(".")-1)==3 && ( rut.split("-")[0].indexOf(".") == 1 ||  rut.split("-")[0].indexOf(".") == 2)   ) {
-              
-                    rutSindigito=rut.split("-")[0].replace('.', '0');
-                
+                if (verificador) {
+                    //ponerle puntos al rut si es que no los tiene
+                    if (rut.indexOf(".")==-1 && (rut.length() == 9 || rut.length() == 10)){  
+                        if (rut.length() == 9){
+                            rut = rut.substring(0,1) + "." + rut.substring(1,4) + "." + rut.substring(4);
+                        }else if(rut.length() == 10){
+                            rut= rut.substring(0,2) + "." + rut.substring(2,5) + "." + rut.substring(5);
+                        }
+                    }
+                    //probar si los digitos son números
+                    if((rut.indexOf(".",rut.indexOf(".") + 1) == rut.lastIndexOf(".")) && (rut.indexOf(".")== 1 || rut.indexOf(".")== 2) && (rut.lastIndexOf(".")== 6 || rut.lastIndexOf(".")== 5)){ //si tiene puntos entonces verificar que al menos tenga dos
+                        Integer.parseInt(rut.split("-")[0].replace('.', '0'));
+                    }else{
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    } 
                 }else{
                     System.out.println("\n\nUno o mas datos son NO validos\n");
                     return;
                 }
-            
+                 //verificar que nombre no contenga caracteres invalidos
+                for (int i = 0; i < nombre.length(); i++) {
+                    char c = nombre.charAt(i);
+                    // Si no está entre a y z, ni entre A y Z, ni es un espacio
+                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    }
+                }
             }else{
                 System.out.println("\n\nUno o mas datos son NO validos\n");
                 return;
             }
         
-        //validar que el rut sin digitos sean numeros
-                Integer.parseInt(rutSindigito); 
-        
-        
-                //se confirma que los datos estan buenos ;)
+            //se confirma que los datos estan buenos ;)
             control.creaCliente(rut, nombre, email);
             System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");
        
@@ -199,7 +192,6 @@ public class UIPrincipal {
         catch (RegistroAtencionesException e) {
             System.out.println(e.getMessage());
         }
-        
     }//fin crea cliente
 
     private void creaVeterinario(){                                            
@@ -219,89 +211,61 @@ public class UIPrincipal {
             System.out.print("Especialidad: ");
             especialidad = tcld.next().trim();
         
-            if (rut.isEmpty()|| rut.indexOf("-") != rut.lastIndexOf("-") || rut.endsWith("-") ||  rut.startsWith("-") || //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
-                    nombre.isEmpty() || //validar si nombre está vacio
-                    email.isEmpty() ||   email.indexOf("@") != email.lastIndexOf("@") || email.endsWith("@")  || email.startsWith("@") || //validar si email está vacio o tiene solo un @ o está mal posicionado
-                    !(email.lastIndexOf(".") > email.indexOf("@")  && email.lastIndexOf(".")-1 != email.indexOf("@")) || email.endsWith(".") || email.indexOf(".",email.indexOf("@")) != email.lastIndexOf(".") ) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
-            
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
-            //validar Rut termina de 0-9 o k
-            boolean verificador=false;                       
-            for(int i=0 ; i < 10; i++){
-                if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
-                    verificador=true;
+            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-")
+                    && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
+                    !nombre.isEmpty()
+                    &&
+                    !especialidad.isEmpty()
+                    && //validar si nombre está vacio
+                    !email.isEmpty() && email.indexOf("@") == email.lastIndexOf("@")
+                    && //validar si email está vacio o tiene solo un @ o está mal posicionado
+                    email.lastIndexOf(".") > email.indexOf("@") && email.lastIndexOf(".") - 1 != email.indexOf("@") && !email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
+                    
+                //validar Rut termina de 0-9 o k
+                boolean verificador = false;
+                for (int i = 0; i < 10; i++) {
+                    if (rut.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut.split("-")[1].equalsIgnoreCase("k")) {
+                        verificador = true;
+                    }
                 }
-            }
-            if (!verificador) {
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
-            //validar que el rut tenga el tamaño necesario
-            String rutSindigito; //rutSindigito es el tur sin el "-" ni el numero que siguiente
-            
-            if (rut.split("-")[0].indexOf(".")==-1) {//verificar si el rut no tiene puntos
-            
-                if (rut.split("-")[0].length() != 7 && rut.split("-")[0].length() != 8 ) {//verificar que tenga la cantidad necesaria de numeros
-                    System.out.println("\n\nUno o mas datos son NO validos\n");
-                    return;
-                }else{
-                    rutSindigito=rut.split("-")[0];
-                }
-            
-            }else if(rut.split("-")[0].indexOf(".",rut.split("-")[0].indexOf(".") + 1) == rut.split("-")[0].lastIndexOf(".")){ //si tiene puntos entonces verificar que al menos tenga dos
-            
-                //validar que los puntos estén bien posicionados
-                if ((rut.split("-")[0].length() - 1 - rut.split("-")[0].lastIndexOf(".")) == 3 &&
-                    (rut.split("-")[0].lastIndexOf(".") - rut.split("-")[0].indexOf(".")-1)==3 &&
-                    ( rut.split("-")[0].indexOf(".") == 1 ||  rut.split("-")[0].indexOf(".") == 2)   ) {
-                
-                    rutSindigito=rut.split("-")[0].replace('.', '0');
-                
-                }else{
+                if (verificador) {
+                    //ponerle puntos al rut si es que no los tiene
+                    if (rut.indexOf(".") == -1 && (rut.length() == 9 || rut.length() == 10)) {
+                        if (rut.length() == 9) {
+                            rut = rut.substring(0, 1) + "." + rut.substring(1, 4) + "." + rut.substring(4);
+                        } else if (rut.length() == 10) {
+                            rut = rut.substring(0, 2) + "." + rut.substring(2, 5) + "." + rut.substring(5);
+                        }
+                    }
+                    //probar si los digitos son números
+                    if ((rut.indexOf(".", rut.indexOf(".") + 1) == rut.lastIndexOf(".")) && (rut.indexOf(".") == 1 || rut.indexOf(".") == 2) && (rut.lastIndexOf(".") == 6 || rut.lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
+                        Integer.parseInt(rut.split("-")[0].replace('.', '0'));
+                    } else {
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    }
+                } else {
                     System.out.println("\n\nUno o mas datos son NO validos\n");
                     return;
                 }
-            
-            }else{
+                //verificar que nombre y especialidad no contenga caracteres invalidos
+                String nomEspecialidad = nombre + especialidad; 
+                for (int i = 0; i < nomEspecialidad.length(); i++) {
+                    char c = nomEspecialidad.charAt(i);
+                    // Si no está entre a y z, ni entre A y Z, ni es un espacio
+                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {//no funciona con ñ
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    }
+                }
+            } else {
                 System.out.println("\n\nUno o mas datos son NO validos\n");
                 return;
-            }
-        
-            //validar que el rut sin digitos sean numeros
-            try {
-                Integer.parseInt(rutSindigito);
-            } catch (NumberFormatException e) {
-                System.out.println("\n\nUno o mas datos son NO validos\n");
-                return;
-            }
-        
-            //verificar que nombre no contenga caracteres invalidos
-            for (int i = 0; i < nombre.length(); i++) {
-                char c = nombre.charAt(i);
-                // Si no está entre a y z, ni entre A y Z, ni es un espacio
-                if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
-                    System.out.println("\n\nUno o mas datos son NO validos\n");
-                    return;
-                }
-            }
-        
-            //verificar que especialidad no contenga caracteres invalidos
-            for (int i = 0; i < especialidad.length(); i++) {
-                char c = especialidad.charAt(i);
-                // Si no está entre a y z, ni entre A y Z, ni es un espacio
-                if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
-                    System.out.println("\n\nUno o mas datos son NO validos\n");
-                    return;
-                }
             }
                 
             //Todo validado, se envia datos para crear veterinario
             control.creaVeterinario(rut, nombre, email, especialidad);
-            System.out.println("\n\nEl cliente se ha creado satisfactoriamente\n");            
+            System.out.println("\n\nEl veterinario se ha creado satisfactoriamente\n");            
         }catch (RegistroAtencionesException ex) {
             System.out.println(ex.getMessage());
         }
@@ -343,6 +307,37 @@ public class UIPrincipal {
                             return;
                         }
                     }   
+                }
+                //valida rut
+                 if (!rutDueno.isEmpty() && rutDueno.indexOf("-") == rutDueno.lastIndexOf("-")) {
+                    boolean verificador = false;
+                    for (int i = 0; i < 10; i++) {
+                        if (rutDueno.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rutDueno.split("-")[1].equalsIgnoreCase("k")) {
+                            verificador = true;
+                        }
+                    }
+                    if (verificador) {
+                        //ponerle puntos al rut si es que no los tiene
+                        if (rutDueno.indexOf(".") == -1 && (rutDueno.length() == 9 || rutDueno.length() == 10)) {
+                            if (rutDueno.length() == 9) {
+                                rutDueno = rutDueno.substring(0, 1) + "." + rutDueno.substring(1, 4) + "." + rutDueno.substring(4);
+                            } else if (rutDueno.length() == 10) {
+                                rutDueno = rutDueno.substring(0, 2) + "." + rutDueno.substring(2, 5) + "." + rutDueno.substring(5);
+                            }
+                        }
+                        //probar si los digitos son números
+                        if ((rutDueno.indexOf(".", rutDueno.indexOf(".") + 1) == rutDueno.lastIndexOf(".")) && (rutDueno.indexOf(".") == 1
+                                || rutDueno.indexOf(".") == 2)
+                                && (rutDueno.lastIndexOf(".") == 6 || rutDueno.lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
+                            Integer.parseInt(rutDueno.split("-")[0].replace('.', '0'));
+                        } else {
+                            System.out.println("\n\nUno o mas datos son NO validos\n");
+                            return;
+                        }
+                    } else {
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    }
                 }
                 //Todo validado, se envia datos para crear mascota
                 control.creaMascota(nombre, fecha, clase, especie, raza, rutDueno);
