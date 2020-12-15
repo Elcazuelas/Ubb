@@ -37,11 +37,15 @@ public class Mascota implements Serializable {
         return nombre;
     }
 
-    public int getEdad(){
-         if(fechaNac.getMonthValue() > LocalDate.now().getMonthValue() || ( fechaNac.getMonthValue() == LocalDate.now().getMonthValue() && fechaNac.getDayOfMonth() > LocalDate.now().getDayOfMonth())){
-             return  LocalDate.now().compareTo(fechaNac) - 1;
-         }
-         return  LocalDate.now().compareTo(fechaNac);
+    public int getEdad() {
+        if (fechaNac.getYear() == LocalDate.now().getYear()) {
+            return 0;
+        } else if (fechaNac.getMonthValue() > LocalDate.now().getMonthValue()
+                || (fechaNac.getMonthValue() == LocalDate.now().getMonthValue()
+                && fechaNac.getDayOfMonth() > LocalDate.now().getDayOfMonth())){
+            return LocalDate.now().compareTo(fechaNac) - 1;
+        }
+        return LocalDate.now().compareTo(fechaNac);
     }
 
     public Cliente getDueno(){

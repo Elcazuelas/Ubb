@@ -7,6 +7,7 @@
 package presentacion;
 import control.Controlador;
 import excepciones.RegistroAtencionesException;
+import java.time.DateTimeException;
 import static modelo.Clase.*;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -134,7 +135,7 @@ public class UIPrincipal {
             email=tcld.next().trim();
         
                 //valido espacios vacíos
-            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-")
+            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-") && rut.indexOf("-") != -1
                     && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
                     !nombre.isEmpty() && nombre !=null
                     && //validar si nombre está vacio
@@ -203,7 +204,7 @@ public class UIPrincipal {
             System.out.print("Especialidad: ");
             especialidad = tcld.next().trim();
         
-            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-") && rut != null
+            if (!rut.isEmpty() && rut.indexOf("-") == rut.lastIndexOf("-") && rut != null && rut.indexOf("-") != -1
                     && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
                     !nombre.isEmpty() && nombre != null
                     &&
@@ -277,7 +278,7 @@ public class UIPrincipal {
             if (clase!=null && fecha !=null && nombre!=null && especie!=null && raza!=null 
                     && !(nombre.equals("") && especie.equals("") && raza.equals(""))){    //se verifica de que datos clase y fecha no esten vacios
                 //valida rut
-                 if (!rutDueno.isEmpty() && rutDueno.indexOf("-") == rutDueno.lastIndexOf("-") && rutDueno != null) {
+                 if (!rutDueno.isEmpty() && rutDueno.indexOf("-") == rutDueno.lastIndexOf("-") && rutDueno != null && rutDueno.indexOf("-") != -1) {
                     boolean verificador = false;
                     for (int i = 0; i < 10; i++) {
                         if (rutDueno.split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rutDueno.split("-")[1].equalsIgnoreCase("k")) {
@@ -306,13 +307,16 @@ public class UIPrincipal {
                         System.out.println("\n\nUno o mas datos son NO validos\n");
                         return;
                     }
+                }else{
+                System.out.println("\n\nUno o mas datos son NO validos\n");
                 }
                 //Todo validado, se envia datos para crear mascota
-                control.creaMascota(nombre, fecha, clase, especie, raza, rutDueno);
-                System.out.println("\n\nNueva mascota, creada satisfactoriamente\n");
             }else{
-                System.out.println("\n\nUno o mas datos son NO validos\n");
+            System.out.println("\n\nUno o mas datos son NO validos\n");
             }
+            control.creaMascota(nombre, fecha, clase, especie, raza, rutDueno);
+            System.out.println("\n\nNueva mascota, creada satisfactoriamente\n");
+            
         } catch (RegistroAtencionesException e) {
             System.out.println(e.getMessage());
         }    
@@ -350,6 +354,7 @@ public class UIPrincipal {
                         System.out.print("\t");
                     }
                 }
+                System.out.println("\n");
             return;
             }
         }
@@ -417,7 +422,6 @@ public class UIPrincipal {
         //inicio datos de fechas
         int mes, año, dia;
         String fecha;
-        LocalDate fechaNac;
 
         // ingreso datos
         System.out.print("Fecha de nacimiento de la mascota (dd/mm/aaaa): ");
@@ -432,17 +436,13 @@ public class UIPrincipal {
                 dia = Integer.parseInt(fecha.split("/")[0]);
                 mes = Integer.parseInt(fecha.split("/")[1]);
                 año = Integer.parseInt(fecha.split("/")[2]);
+                return LocalDate.of(año, mes, dia);
             } catch (NumberFormatException e) {
-                //devolver error
+                return null;
+            }catch (DateTimeException e){
                 return null;
             }
-
-            fechaNac = LocalDate.of(año, mes, dia);
-
-        } else {
-            return null;
         }
-
-        return fechaNac;
+       return null;
     }
 }
