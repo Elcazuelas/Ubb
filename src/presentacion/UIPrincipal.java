@@ -185,7 +185,7 @@ public class UIPrincipal {
         } catch (NumberFormatException e) {
             System.out.println("\n\nUno o mas datos son NO validos\n");
         } catch (RegistroAtencionesException e) {
-            System.out.println("\nError!"+e.getMessage()+"\n");
+            System.out.println("\nError! "+e.getMessage()+"\n");
         }
     }
 
@@ -253,7 +253,7 @@ public class UIPrincipal {
         }catch (NumberFormatException e) {
             System.out.println("\n\nUno o mas datos son NO validos\n"); 
         }catch (RegistroAtencionesException ex) {
-            System.out.println("\nError!" + ex.getMessage() + "\n");
+            System.out.println("\nError! " + ex.getMessage() + "\n");
         }
     }
 
@@ -323,7 +323,7 @@ public class UIPrincipal {
         }catch (NumberFormatException e) {
             System.out.println("\n\nUno o mas datos son NO validos\n"); 
         }catch (RegistroAtencionesException ex) {
-            System.out.println("\nError!" + ex.getMessage() + "\n");
+            System.out.println("\nError! " + ex.getMessage() + "\n");
         }
 
     }
