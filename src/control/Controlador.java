@@ -56,7 +56,7 @@ public class Controlador {
             throw new RegistroAtencionesException("Ya existe cliente con el rut dado");
         }
         
-    }//fin crea cliente
+    }
     
     public void creaVeterinario(String rut, String nombre, String email, String especialidad) throws  RegistroAtencionesException{
         if (buscaVeterinario(rut) == null) {

@@ -142,7 +142,7 @@ public class UIPrincipal {
                     && //validar si el rut termina o comienza en "-" o está vacio o no tiene nada despues del guión
                     !nombre.isEmpty() && nombre != null
                     && //validar si nombre está vacio
-                    !email.isEmpty() && email != null && email.indexOf("@") == email.lastIndexOf("@")
+                    !email.isEmpty() && email != null && email.indexOf("@") == email.lastIndexOf("@") && email.lastIndexOf("@") != -1
                     && //validar si email está vacio o tiene solo un @ o está mal posicionado
                     email.lastIndexOf(".") > email.indexOf("@") && email.lastIndexOf(".") - 1 != email.indexOf("@") && !email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
 
@@ -190,7 +190,7 @@ public class UIPrincipal {
     }
 
     private void creaVeterinario() {
-        try {                                    //preguntar julio solo valido espacios vacios
+        try {                                    
             System.out.println("\nCreando un nuevo veterinario...");
 
             //Datos
@@ -211,7 +211,7 @@ public class UIPrincipal {
                     !nombre.isEmpty() && nombre != null
                     && !especialidad.isEmpty() && especialidad != null
                     && //validar si nombre está vacio
-                    !email.isEmpty() && email != null && email.indexOf("@") == email.lastIndexOf("@")
+                    !email.isEmpty() && email != null && email.indexOf("@") == email.lastIndexOf("@") && email.lastIndexOf("@") != -1
                     && //validar si email está vacio o tiene solo un @ o está mal posicionado
                     email.lastIndexOf(".") > email.indexOf("@") && email.lastIndexOf(".") - 1 != email.indexOf("@") && !email.endsWith(".")) { //validar que el email tenga un . despues del @ y que tenga texto antes y despues de él
 
