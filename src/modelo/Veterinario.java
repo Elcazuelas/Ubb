@@ -31,8 +31,8 @@ public class Veterinario extends Rol{
         atenciones.add(atencion);
     }
     
-    public Atencion[] getAtencion(){
-        atenciones.toArray(new Atencion[0]);
+    public Atencion[] getAtenciones(){
+        return atenciones.toArray(new Atencion[0]);
     }
     
     public boolean tieneAtenciones(){
