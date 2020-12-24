@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,7 +21,8 @@ public class Mascota implements Serializable {
 
     //relaciones
     private Cliente dueno;
-
+    private ArrayList<Atencion> atenRecibidas;
+    
     //constructor
     public Mascota(String nom, LocalDate fNac, Clase clase, String esp, String raza, Cliente dueno) {
         nombre = nom;
@@ -62,5 +64,13 @@ public class Mascota implements Serializable {
 
     public String getRaza() {
         return raza;
+    }
+    
+    public void agregaAtencion(Atencion atencion){
+        atenRecibidas.add(atencion);
+    }
+    
+    public Atencion[] getAtenciones(){
+        return atenRecibidas.toArray(new Atencion[0]);
     }
 }

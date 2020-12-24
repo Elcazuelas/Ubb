@@ -6,20 +6,37 @@
 
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Julio Monroy - Camilo Vazques
  */
 public class Veterinario extends Rol{
     private String especialidad;
+    private ArrayList<Atencion> atenciones;
 
     public Veterinario(Persona persona, String especialidad) {
         super(persona);
         this.especialidad=especialidad;
+        
+        this.atenciones = new ArrayList<>();
     }
     
     public String getEspecialidad(){
         return especialidad;
+    }
+    
+    public void agregaAtencion(Atencion atencion){
+        atenciones.add(atencion);
+    }
+    
+    public Atencion[] getAtenciones(){
+        return atenciones.toArray(new Atencion[0]);
+    }
+    
+    public boolean tieneAtenciones(){
+        return atenciones.size() > 0 || atenciones != null;
     }
     
     public boolean equals(Veterinario other){
