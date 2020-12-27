@@ -22,16 +22,19 @@ public class Controlador {
     private static Controlador instance;
     
     //Relacion
-    ArrayList<Cliente> clientes;
-    ArrayList<Veterinario> veterinarios;
-    ArrayList<Mascota> mascotas;
-    ControladorPersistencia cPersistencia;
+    private ArrayList<Cliente> clientes;
+    private ArrayList<Veterinario> veterinarios;
+    private ArrayList<Mascota> mascotas;
+    private ArrayList<Atencion> atenciones;
+    
+    private ControladorPersistencia cPersistencia;
     
     //constructor
     private Controlador(){
-        clientes = new ArrayList();
-        veterinarios = new ArrayList();
-        mascotas = new ArrayList();
+        clientes = new ArrayList<>();
+        veterinarios = new ArrayList<>();
+        mascotas = new ArrayList<>();
+        atenciones = new ArrayList<>();
         cPersistencia = ControladorPersistencia.getInstance();
     }
     
@@ -43,7 +46,7 @@ public class Controlador {
         return instance;
     }
     
-    //atributos
+    //metodos
     public void creaCliente(String rut, String nombre, String email) throws RegistroAtencionesException{
         if (buscaCliente(rut) == null) {
             Veterinario vet = buscaVeterinario(rut);
@@ -101,6 +104,43 @@ public class Controlador {
                 datosMasc[i][4]=masConClase.get(i).getDueno().getPersona().getnombre();
         }
         return datosMasc;
+    }
+    
+    public void agregaAtencion(String rutCliente, String rutVet, String nomMascota, String diagnostico, String observacion)throws RegistroAtencionesException{
+        if (buscaCliente(rutCliente) != null) {
+            Mascota mascota = buscaMascota(rutCliente, nomMascota);
+            if (mascota != null) {
+                Veterinario vet = buscaVeterinario(rutVet);
+                if (vet != null) {
+                    atenciones.add(new Atencion(LocalDate.now(), diagnostico, observacion, vet, mascota));
+                }else{
+                    throw new RegistroAtencionesException("No existe veterinario con el rut dado");
+                }
+            }else{
+                throw new RegistroAtencionesException("No existe mascota con el nombre dado");
+            }
+        }else{
+            throw new RegistroAtencionesException("No existe cliente con el rut dado");
+        }
+    }
+    
+    public String[][] listaAtencionesMascotasDeCliente(String rutCliente)throws RegistroAtencionesException{
+        int aux = 0;
+        String [][] datos;
+        Mascota[] mascotasCliente;
+        Cliente cliente = buscaCliente(rutCliente);
+        if (cliente != null) {
+            mascotasCliente = cliente.getMascota();
+            for (Mascota mascota : mascotasCliente) {
+                aux += mascota.getAtenciones().length;
+            }
+            datos = new String[aux][6];
+            for (int i = 0 ; i < mascotasCliente.length ; i++) {
+                
+            }
+            
+        }
+        throw new RegistroAtencionesException("No existe cliente con el rut dado");
     }
     
     public String[][] listaDatosVeterinario(){

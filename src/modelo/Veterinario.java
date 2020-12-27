@@ -42,8 +42,4 @@ public class Veterinario extends Rol{
     public boolean equals(Veterinario other){
         return this.getPersona().equals(other.getPersona()) && this.getEspecialidad().equalsIgnoreCase(other.especialidad);
     }
-  
-    
-    
-
 }
