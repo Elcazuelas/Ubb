@@ -22,16 +22,19 @@ public class Controlador {
     private static Controlador instance;
     
     //Relacion
-    ArrayList<Cliente> clientes;
-    ArrayList<Veterinario> veterinarios;
-    ArrayList<Mascota> mascotas;
-    ControladorPersistencia cPersistencia;
+    private ArrayList<Cliente> clientes;
+    private ArrayList<Veterinario> veterinarios;
+    private ArrayList<Mascota> mascotas;
+    private ArrayList<Atencion> atenciones;
+    
+    private ControladorPersistencia cPersistencia;
     
     //constructor
     private Controlador(){
-        clientes = new ArrayList();
-        veterinarios = new ArrayList();
-        mascotas = new ArrayList();
+        clientes = new ArrayList<>();
+        veterinarios = new ArrayList<>();
+        mascotas = new ArrayList<>();
+        atenciones = new ArrayList<>();
         cPersistencia = ControladorPersistencia.getInstance();
     }
     
@@ -43,7 +46,7 @@ public class Controlador {
         return instance;
     }
     
-    //atributos
+    //metodos
     public void creaCliente(String rut, String nombre, String email) throws RegistroAtencionesException{
         if (buscaCliente(rut) == null) {
             Veterinario vet = buscaVeterinario(rut);
@@ -92,24 +95,105 @@ public class Controlador {
                 masConClase.add(mascota);
             }
         }
-        String[][] datosMasc = new  String[masConClase.size()][5];
+        String[][] datosMasc = new  String[masConClase.size()][7];
         for (int i = 0; i < datosMasc.length; i++) {
                 datosMasc[i][0]=masConClase.get(i).getNombre();
                 datosMasc[i][1]=masConClase.get(i).getEspecie();
                 datosMasc[i][2]=masConClase.get(i).getRaza();
                 datosMasc[i][3]=masConClase.get(i).getEdad()+"";
-                datosMasc[i][4]=masConClase.get(i).getDueno().getPersona().getnombre();
+                datosMasc[i][4]=masConClase.get(i).getDueno().getRut();
+                datosMasc[i][5]=masConClase.get(i).getDueno().getPersona().getnombre();
+                datosMasc[i][6] = masConClase.get(i).getAtenciones().length + "";  
+                
+                
         }
         return datosMasc;
     }
     
-    public String[][] listaDatosVeterinario(){
-        String[][] vets = new String[veterinarios.size()][4];
+    public void agregaAtencion(String rutCliente, String rutVet, String nomMascota, String diagnostico, String observacion)throws RegistroAtencionesException{
+        if (buscaCliente(rutCliente) != null) {
+            Mascota mascota = buscaMascota(rutCliente, nomMascota);
+            if (mascota != null) {
+                Veterinario vet = buscaVeterinario(rutVet);
+                if (vet != null) {
+                    atenciones.add(new Atencion(LocalDate.now(), diagnostico, observacion, vet, mascota));
+                }else{
+                    throw new RegistroAtencionesException("No existe veterinario con el rut dado");
+                }
+            }else{
+                throw new RegistroAtencionesException("No existe mascota con el nombre dado");
+            }
+        }else{
+            throw new RegistroAtencionesException("No existe cliente con el rut dado");
+        }
+    }
+    
+    public String[][] listaAtencionesMascotasDeCliente(String rutCliente) throws RegistroAtencionesException {
+        int aux = 0;
+        String[][] datos;
+        Mascota[] mascotasCliente;
+        Cliente cliente = buscaCliente(rutCliente);
+        if (cliente != null) {
+            mascotasCliente = cliente.getMascota();
+            if (mascotasCliente.length != 0) {
+
+                for (Mascota mascota : mascotasCliente) {
+                    if (mascota.getAtenciones().length == 0) {
+                        aux++;
+                    } else {
+                        aux += mascota.getAtenciones().length;
+                    }
+                }
+                datos = new String[aux][6];
+                aux = 0;
+                for (int i = 0; i < mascotasCliente.length; i++) {
+                    datos[aux][0] = mascotasCliente[i].getNombre();
+                    if (mascotasCliente[i].getAtenciones().length == 0) {
+                        aux++;
+                    } else {
+                        for (Atencion atencion : mascotasCliente[i].getAtenciones()) {
+                            datos[aux][1] = atencion.getFecha() + "";
+                            datos[aux][2] = atencion.getDiagnostico();
+                            datos[aux][3] = atencion.getObservaciones();
+                            datos[aux][4] = atencion.getVeterinario().getRut();
+                            datos[aux][5] = atencion.getVeterinario().getPersona().getnombre();
+                            aux++;
+                            datos[aux][0] = "";
+                        }
+                    }
+                }
+                return datos;
+            } else {
+                return new String[0][0];
+            }
+        } else {
+            throw new RegistroAtencionesException("No existe cliente con el rut dado");
+        }
+    }//duda
+        
+    public int calculaNroAtencionesPara(Clase clase, LocalDate fechaIni, LocalDate fechaFin){
+        int nroAtenciones = 0;
+        for (Mascota mascota : mascotas) {
+            if (mascota.getClase() == clase) {
+                for (Atencion atencion : mascota.getAtenciones()) {
+                    if (atencion.estaEntre(fechaIni, fechaFin)) {
+                        nroAtenciones++;
+                    }
+                }
+            }
+        }
+        return nroAtenciones;
+    }
+    
+    public String[][] listaDatosYNroAtencionesDeVeterinario(){
+        String[][] vets = new String[veterinarios.size()][5];
         for (int i = 0; i < vets.length; i++) {
             vets[i][0] = veterinarios.get(i).getRut();
             vets[i][1] = veterinarios.get(i).getPersona().getnombre();
             vets[i][2] = veterinarios.get(i).getPersona().getEmail();
             vets[i][3] = veterinarios.get(i).getEspecialidad();
+            vets[i][4] = veterinarios.get(i).getEspecialidad().length() + "";
+            
         }
         return vets;
     }
@@ -118,7 +202,15 @@ public class Controlador {
         Cliente[] clienteArr = cPersistencia. leeClientes();
         for (Cliente cliente : clienteArr) {
             clientes.add(cliente);
-            mascotas.addAll(Arrays.asList(cliente.getMascota()));
+            for (Mascota mascota : cliente.getMascota()) {
+                mascotas.add(mascota);
+                for (Atencion atencion : mascota.getAtenciones()) {
+                    atenciones.add(atencion);
+                    if (buscaVeterinario(atencion.getVeterinario().getRut()) == null) {
+                        veterinarios.add(atencion.getVeterinario());
+                    }
+                }
+            }
         }
         //agrega vets
         veterinarios.addAll(Arrays.asList(cPersistencia.leeVeterinario()));
@@ -126,9 +218,14 @@ public class Controlador {
     }
     
     public void escribeDatosPersistentes() throws RegistroAtencionesException{      
+        ArrayList<Veterinario> vetSinAtenciones = new ArrayList<>();
         cPersistencia.escribeClientes(clientes.toArray(new Cliente[0]));
-        cPersistencia.escribeVeterinarios(veterinarios.toArray(new Veterinario[0]));
-  
+        for (Veterinario veterinario : veterinarios) {
+            if (!veterinario.tieneAtenciones()) {
+                vetSinAtenciones.add(veterinario);
+            }
+        }
+        cPersistencia.escribeVeterinarios(vetSinAtenciones.toArray(new Veterinario[0]));
     }
     
     private Cliente buscaCliente(String rut){
@@ -162,5 +259,4 @@ public class Controlador {
         }
         return null;
     }
-}//fin clase
-
+}

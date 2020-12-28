@@ -32,6 +32,7 @@ public class Mascota implements Serializable {
         this.raza = raza;
         this.dueno = dueno;
         this.dueno.agregaMascota(this);
+        atenRecibidas= new ArrayList<>();
     }
 
     //metodos

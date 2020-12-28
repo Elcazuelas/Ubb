@@ -30,6 +30,9 @@ public class Atencion implements Serializable{
         observaciones=obs;
         veterinario=vet;
         mascota=masc;
+        
+        mascota.agregaAtencion(this);
+        veterinario.agregaAtencion(this);
     }
 
     public LocalDate getFecha() {
