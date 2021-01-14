@@ -385,16 +385,17 @@ public class UIPrincipal {
 
             for (int i = 0; i < rut.length; i++) {
                 boolean verificador = false;
-                for (int j = 0; j < 10; j++) {
-                    if (!rut[i].isEmpty() && rut[i].indexOf("-") == rut[i].lastIndexOf("-") && rut[i] != null && rut[i].indexOf("-") != -1) {
-                        for (int k = 0; k < 10; k++) {
-                            if (rut[i].split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut[i].split("-")[1].equalsIgnoreCase("k")) {
+                    if (!rut[i].isEmpty() && rut[i].indexOf("-") == rut[i].lastIndexOf("-") && rut[i] != null && rut[i].contains("-")) {
+                        for (int k = 1; k < 10; k++) {
+                            if (Character.getNumericValue(rut[i].charAt(rut[i].length() - 1)) == k
+                                    || rut[i].charAt(rut[i].length() - 1) == 'k'
+                                    || rut[i].charAt(rut[i].length() - 1) == 'K') {
                                 verificador = true;
                             }
                         }
                         if (verificador) {
                             //ponerle puntos al rut si es que no los tiene
-                            if (rut[i].indexOf(".") == -1 && (rut[i].length() == 9 || rut[i].length() == 10)) {
+                            if (!rut[i].contains(".") && (rut[i].length() == 9 || rut[i].length() == 10)) {
                                 if (rut[i].length() == 9) {
                                     rut[i] = rut[i].substring(0, 1) + "." + rut[i].substring(1, 4) + "." + rut[i].substring(4);
                                 } else if (rut[i].length() == 10) {
@@ -407,18 +408,17 @@ public class UIPrincipal {
                                     && (rut[i].lastIndexOf(".") == 6 || rut[i].lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
                                 Integer.parseInt(rut[i].split("-")[0].replace('.', '0'));
                             } else {
-                                System.out.println("\n\nUno o mas datos son NO validos\n");
+                                System.out.println("\n\nUno o mas datos son NO validos 1\n");
                                 return;
                             }
                         } else {
-                            System.out.println("\n\nUno o mas datos son NO validos\n");
+                            System.out.println("\n\nUno o mas datos son NO validos2\n");
                             return;
                         }
                     } else {
-                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        System.out.println("\n\nUno o mas datos son NO validos3\n");
                         return;
                     }
-                }
             }
             control.agregaAtencion(rut[0], rut[1], nombre, diag, obs);
             System.out.println("La atencion a la mascota se ha agregado exitosamente");
