@@ -56,7 +56,7 @@ public class Atencion implements Serializable{
     }
     
     public boolean estaEntre(LocalDate fechaInicio, LocalDate fechaFin){
-        if (fecha.isAfter(fechaInicio)&& fecha.isBefore(fechaFin)){
+        if (fecha.isAfter(fechaInicio)&& (fecha.isBefore(fechaFin) || fecha.equals(fechaFin))){
             return true;
         }
         return false;

@@ -12,8 +12,6 @@ import modelo.Clase;
 import static modelo.Clase.*;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +25,7 @@ public class UIPrincipal {
     private Scanner tcld;
 
     //asociacion
-    Controlador control;
+    private Controlador control;
 
     //constructor 
     private UIPrincipal() {
@@ -345,21 +343,11 @@ public class UIPrincipal {
                 //imprimo la cabecera
                 System.out.println("\nListado Mascotas de la Clase " + clase);
                 System.out.println("--------------------------------" + ((clase == Reptil) ? "---" : ((clase == Mamifero) ? "-----" : " ")));
-                System.out.print("\nNombre        \tEspecie        \tRaza           \tEdad(anios)    \tRut dueno      \tNombre dueno   \tNro.At");
+                System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-5s\n", "Nombre","Especie","Raza","Edad(anios)", "Rut dueno", "Nombre dueno", "Nro.At");
 
                 //se imprime la matriz dada
                 for (int i = 0; i < lista.length; i++) {
-                    System.out.println(""); //se imprime espacio para hacer un salto de linea
-                    for (int j = 0; j < lista[i].length; j++) {
-                        System.out.print(lista[i][j]);
-                        int contador = (15 - lista[i][j].length());
-                        //se ordena dependiendo de la cantidad de letras
-                        while (contador > 0) {
-                            System.out.print(" ");
-                            contador--;
-                        }
-                        System.out.print("\t");
-                    }
+                    System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-5s\n", lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4], lista[i][5], lista[i][6]);
                 }
                 System.out.println("\n");
                 return;
@@ -368,86 +356,89 @@ public class UIPrincipal {
         System.out.println("\nNo existen mascotas de la clase indicada\n");
     }
     
-    private void agregaAtencionAMascota(){
-       
-        System.out.println("\nAgregando una nueva atencion a una mascota...");
-        
-        String rutDueno;
-        String nombre;
-        String rutVet;
-        String diag;
-        String obs;
-        
-        System.out.print("Rut dueno:");
-        rutDueno=tcld.next().trim();
-        System.out.print("Nombre de la mascota:");
-        nombre=tcld.next().trim();
-        System.out.print("Rut veterinario:");
-        rutVet=tcld.next().trim();
-        System.out.print("Diagnostico:");
-        diag=tcld.next().trim();
-        System.out.print("Observacion:");
-        obs=tcld.next().trim();
-        
-        //valido vacios o null de nombre, diagnostico y observaciones
-        if (nombre == null || nombre.isEmpty() || nombre.length()==0 || 
-                diag == null || diag.isEmpty() || diag.length()==0 ||
-                obs == null || obs.isEmpty() || obs.length()==0) {
-            System.out.println("\n\nUno o mas datos son NO validos\n");
-            return;
-        }
-        
-        String[] rut= new String[2];
-        rut[0]=rutDueno;
-        rut[1]=rutVet;
-        for (int i = 0; i < rut.length; i++) {
-            boolean verificador = false;
-            for (int j = 0; j < 10; j++) {
-                if (rut[i].split("-")[1].equalsIgnoreCase(Integer.toString(j)) || rut[i].split("-")[1].equalsIgnoreCase("k")) {
-                    verificador = true;
-                }
-            }
-            if (verificador) {
-                //ponerle puntos al rut si es que no los tiene
-                if (rut[i].indexOf(".") == -1 && (rut[i].length() == 9 || rut[i].length() == 10)) {
-                    if (rut[i].length() == 9) {
-                        rut[i] = rut[i].substring(0, 1) + "." + rut[i].substring(1, 4) + "." + rut[i].substring(4);
-                    } else if (rut[i].length() == 10) {
-                        rut[i] = rut[i].substring(0, 2) + "." + rut[i].substring(2, 5) + "." + rut[i].substring(5);
-                    }
-                }
-                //probar si los digitos son números
-                if ((rut[i].indexOf(".", rut[i].indexOf(".") + 1) == rut[i].lastIndexOf(".")) && (rut[i].indexOf(".") == 1 || rut[i].indexOf(".") == 2) && (rut[i].lastIndexOf(".") == 6 || rut[i].lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
-                    Integer.parseInt(rut[i].split("-")[0].replace('.', '0'));
-                } else {
-                    System.out.println("\n\nUno o mas datos son NO validos\n");
-                    return;
-                }
-            } else {
+    private void agregaAtencionAMascota() {
+        try {
+            System.out.println("\nAgregando una nueva atencion a una mascota...");
+            String[] rut = new String[2];
+            String nombre;
+            String diag;
+            String obs;
+
+            System.out.print("Rut dueno: ");
+            rut[0] = tcld.next().trim(); //rut dueno
+            System.out.print("Nombre de la mascota: ");
+            nombre = tcld.next().trim();
+            System.out.print("Rut veterinario: ");
+            rut[1] = tcld.next().trim(); //rut vet
+            System.out.print("Diagnostico: ");
+            diag = tcld.next().trim();
+            System.out.print("Observacion: ");
+            obs = tcld.next().trim();
+
+            //valido vacios o null de nombre, diagnostico y observaciones
+            if (nombre == null || nombre.isEmpty() || nombre.length() == 0
+                    || diag == null || diag.isEmpty() || diag.length() == 0
+                    || obs == null || obs.isEmpty() || obs.length() == 0) {
                 System.out.println("\n\nUno o mas datos son NO validos\n");
                 return;
             }
-        }
-        rutDueno=rut[0];
-        rutVet=rut[1];
-        try {
-            control.agregaAtencion(rutDueno, rutVet, nombre, diag, obs);
+
+            for (int i = 0; i < rut.length; i++) {
+                boolean verificador = false;
+                for (int j = 0; j < 10; j++) {
+                    if (!rut[i].isEmpty() && rut[i].indexOf("-") == rut[i].lastIndexOf("-") && rut[i] != null && rut[i].indexOf("-") != -1) {
+                        for (int k = 0; k < 10; k++) {
+                            if (rut[i].split("-")[1].equalsIgnoreCase(Integer.toString(i)) || rut[i].split("-")[1].equalsIgnoreCase("k")) {
+                                verificador = true;
+                            }
+                        }
+                        if (verificador) {
+                            //ponerle puntos al rut si es que no los tiene
+                            if (rut[i].indexOf(".") == -1 && (rut[i].length() == 9 || rut[i].length() == 10)) {
+                                if (rut[i].length() == 9) {
+                                    rut[i] = rut[i].substring(0, 1) + "." + rut[i].substring(1, 4) + "." + rut[i].substring(4);
+                                } else if (rut[i].length() == 10) {
+                                    rut[i] = rut[i].substring(0, 2) + "." + rut[i].substring(2, 5) + "." + rut[i].substring(5);
+                                }
+                            }
+                            //probar si los digitos son números
+                            if ((rut[i].indexOf(".", rut[i].indexOf(".") + 1) == rut[i].lastIndexOf(".")) && (rut[i].indexOf(".") == 1
+                                    || rut[i].indexOf(".") == 2)
+                                    && (rut[i].lastIndexOf(".") == 6 || rut[i].lastIndexOf(".") == 5)) { //si tiene puntos entonces verificar que al menos tenga dos
+                                Integer.parseInt(rut[i].split("-")[0].replace('.', '0'));
+                            } else {
+                                System.out.println("\n\nUno o mas datos son NO validos\n");
+                                return;
+                            }
+                        } else {
+                            System.out.println("\n\nUno o mas datos son NO validos\n");
+                            return;
+                        }
+                    } else {
+                        System.out.println("\n\nUno o mas datos son NO validos\n");
+                        return;
+                    }
+                }
+            }
+            control.agregaAtencion(rut[0], rut[1], nombre, diag, obs);
+            System.out.println("La atencion a la mascota se ha agregado exitosamente");
+        } catch (NumberFormatException e) {
+            System.out.println("\n\nUno o mas datos son NO validos\n");
         } catch (RegistroAtencionesException ex) {
             System.out.println(ex.getMessage());
         }
-        System.out.println("La atencion a la mascota se ha agregado exitosamente");
     }
     
-    private void listaAtencionesDeMascotasDeUnCliente(){
+    private void listaAtencionesDeMascotasDeUnCliente() {
         //
         System.out.println("\nGenerando Listado de la Ultima Atencion de las Mascotas de un CLiente...");
-        
+       try { 
         String rut;
         String[][] datosAtenciones;
-        
+
         System.out.print("Rut dueno:");
-        rut=tcld.next().trim();
-        
+        rut = tcld.next().trim();
+
         if (rut.indexOf(".") == -1 && (rut.length() == 9 || rut.length() == 10)) {
             if (rut.length() == 9) {
                 rut = rut.substring(0, 1) + "." + rut.substring(1, 4) + "." + rut.substring(4);
@@ -455,65 +446,51 @@ public class UIPrincipal {
                 rut = rut.substring(0, 2) + "." + rut.substring(2, 5) + "." + rut.substring(5);
             }
         }
-        datosAtenciones=control.listaAtencionesMascotasDeCliente(rut);
-       
-        if (datosAtenciones.length != 0) {
-            System.out.println("\n\nListado de Atenciones de Mascotas del Cliente");
-            System.out.println("----------------------------------------------");
-            System.out.print("\nNom.mascota    \tFecha At.      \tDiagnostico    \tObservaciones                 \tRut vet.       \tNombre Vet.");
+        
+            datosAtenciones = control.listaAtencionesMascotasDe(rut);
 
-            //se imprime matriz dada
-            for (int i = 0; i < datosAtenciones.length; i++) {
-                System.out.println(""); //se imprime espacio para hacer un salto de linea
-                for (int j = 0; j < datosAtenciones[i].length; j++) {
-                    System.out.print((datosAtenciones[i][j]==null) ? "S/At." : datosAtenciones[i][j]);
-                    int contador;
-                    if (!(datosAtenciones[i][j] == null)) {
-                        contador = (15 - datosAtenciones[i][j].length());
-                    } else {
-                        contador = 10;
+            if (datosAtenciones.length != 0) {
+                System.out.println("\n\nListado de Atenciones de Mascotas del Cliente");
+                System.out.println("----------------------------------------------");
+                System.out.printf("%-15s %-10s %-20s %-20s %-15s %-20s\n","Nom.mascota","Fecha At.", "Diagnostico", "Observaciones", "Rut vet.", "Nombre Vet." );
+                
+                for (String[] datosArr : datosAtenciones) {
+                    if (datosArr[1] != null) {
+                        System.out.printf("%-15s %-10s %-20s %-20s %-15s %-20s\n",datosArr[0], datosArr[1], datosArr[2], datosArr[3], datosArr[4], datosArr[5]);
+                    }else{
+                        System.out.printf("%-15s %-10s %-20s %-20s %-15s %-20s\n",datosArr[0], "S/At.", "S/At.", "S/At.", "S/At.", "S/At.");
                     }
-                    //se añade espacios para la columna de observaciones
-                    if (j == 3) {
-                        contador += 15;
-                    }
-                    //se ordena dependiendo de la cantidad de letras
-                    while (contador > 0) {
-                        System.out.print(" ");
-                        contador--;
-                    }
-                    System.out.print("\t");
                 }
+                System.out.println("\n");
+            } else {
+                System.out.println("El cliente no presenta mascotas registradas");
             }
-            System.out.println("\n");
-            return;
-        }else{
-            System.out.println("El cliente no presenta mascotas registradas");
+        } catch (RegistroAtencionesException ex) {
+            System.out.println("Error" + ex.getMessage());
         }
     }
     
     private void muestraNroAtencionesPorClaseEntre(){
         System.out.println("Generando Listado Atenciones por Clase, Especie y Raza en un Lapso de Tiempo...");
-        
-        Clase clase=leeClase();
+
+        Clase clase = leeClase();
         LocalDate fechaInicio;
         LocalDate fechaFin;
-        
+
         System.out.print("Fecha inicio del intervalo (dd/mm/aaaa): ");
-        fechaInicio=leeFecha();
+        fechaInicio = leeFecha();
         System.out.print("Fecha fin del intervalo (dd/mm/aaaa): ");
-        fechaFin=leeFecha();
-        
-        if(fechaInicio==null || fechaFin==null || clase==null){
+        fechaFin = leeFecha();
+
+        if (fechaInicio != null || fechaFin != null || clase != null) {
+            if ((fechaInicio.isBefore(LocalDate.now()) || fechaInicio.equals(LocalDate.now()))
+                    && (fechaFin.isBefore(LocalDate.now()) || fechaFin.equals(LocalDate.now()))) {
+                int cantidad = control.calculaNroAtencionesPara(clase, fechaInicio, fechaFin);
+                System.out.print("\n\nNumero Atenciones Registradas: " + cantidad);
+            }
+        } else {
             System.out.println("\n\nUno o mas datos son NO validos\n");
-            return;
         }
-        
-        if (fechaInicio.isBefore(LocalDate.now()) && (fechaFin.isBefore(LocalDate.now()) || fechaFin.equals(LocalDate.now()))){
-            int cantidad=control.calculaNroAtencionesPara(clase,fechaInicio, fechaFin);
-            System.out.print("\n\nNumero Atenciones Registradas: " + cantidad);
-        }
-        return;
     }
 
     private void listaDatosVeterinarios() {//imprimir String[][] que viene listo
@@ -529,14 +506,11 @@ public class UIPrincipal {
             //imprimo la cabecera (ojo la ortografia)
             System.out.println("Listado de Veterinarios");
             System.out.println("-----------------------");
-            System.out.print("\nRut\t\tNombre\t\tEmail\t\tEspecialidad\n");
+            System.out.printf("%-15s %-20s %-25s %-20s %-10s\n", "Rut", "Nombre", "Email", "Especialidad", "Nro.At" );
 
             //se imprime la matriz dada
             for (int i = 0; i < lista.length; i++) {
-                for (int j = 0; j < lista[i].length; j++) {
-                    System.out.print(lista[i][j] + ((lista[i][j].length() >= 8) ? "\t" : "\t\t"));
-                }
-                System.out.println("");
+                    System.out.printf("%-15s %-20s %-25s %-20s %-10s\n",lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4]);
             }
         } else {
             System.out.println("No existen veterinarios registrados en el sistema.");

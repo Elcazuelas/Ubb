@@ -128,7 +128,7 @@ public class Controlador {
         }
     }
     
-    public String[][] listaAtencionesMascotasDeCliente(String rutCliente) throws RegistroAtencionesException {
+    public String[][] listaAtencionesMascotasDe(String rutCliente) throws RegistroAtencionesException {
         int aux = 0;
         String[][] datos;
         Mascota[] mascotasCliente;
@@ -157,8 +157,10 @@ public class Controlador {
                             datos[aux][3] = atencion.getObservaciones();
                             datos[aux][4] = atencion.getVeterinario().getRut();
                             datos[aux][5] = atencion.getVeterinario().getPersona().getnombre();
-                            aux++;
-                            datos[aux][0] = "";
+                            if ((aux + 1) != datos.length) {
+                                aux++;
+                                datos[aux][0] = "";
+                            }
                         }
                     }
                 }
@@ -192,7 +194,7 @@ public class Controlador {
             vets[i][1] = veterinarios.get(i).getPersona().getnombre();
             vets[i][2] = veterinarios.get(i).getPersona().getEmail();
             vets[i][3] = veterinarios.get(i).getEspecialidad();
-            vets[i][4] = veterinarios.get(i).getEspecialidad().length() + "";
+            vets[i][4] = veterinarios.get(i).getAtenciones().length + "";
             
         }
         return vets;
@@ -219,13 +221,13 @@ public class Controlador {
     
     public void escribeDatosPersistentes() throws RegistroAtencionesException{      
         ArrayList<Veterinario> vetSinAtenciones = new ArrayList<>();
-        cPersistencia.escribeClientes(clientes.toArray(new Cliente[0]));
         for (Veterinario veterinario : veterinarios) {
             if (!veterinario.tieneAtenciones()) {
                 vetSinAtenciones.add(veterinario);
             }
         }
         cPersistencia.escribeVeterinarios(vetSinAtenciones.toArray(new Veterinario[0]));
+        cPersistencia.escribeClientes(clientes.toArray(new Cliente[0]));
     }
     
     private Cliente buscaCliente(String rut){

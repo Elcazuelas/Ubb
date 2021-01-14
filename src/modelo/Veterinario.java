@@ -36,7 +36,7 @@ public class Veterinario extends Rol{
     }
     
     public boolean tieneAtenciones(){
-        return atenciones.size() > 0 || atenciones != null;
+        return !atenciones.isEmpty();
     }
     
     public boolean equals(Veterinario other){

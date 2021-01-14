@@ -74,4 +74,8 @@ public class Mascota implements Serializable {
     public Atencion[] getAtenciones(){
         return atenRecibidas.toArray(new Atencion[0]);
     }
+    
+    public boolean tieneAtenciones(){
+        return !atenRecibidas.isEmpty();
+    }
 }
