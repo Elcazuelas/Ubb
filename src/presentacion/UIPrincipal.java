@@ -421,7 +421,7 @@ public class UIPrincipal {
                     }
             }
             control.agregaAtencion(rut[0], rut[1], nombre, diag, obs);
-            System.out.println("La atencion a la mascota se ha agregado exitosamente");
+            System.out.println("\nLa atencion a la mascota se ha agregado exitosamente\n");
         } catch (NumberFormatException e) {
             System.out.println("\n\nUno o mas datos son NO validos\n");
         } catch (RegistroAtencionesException ex) {
@@ -565,9 +565,7 @@ public class UIPrincipal {
                 mes = Integer.parseInt(fecha.split("/")[1]);
                 año = Integer.parseInt(fecha.split("/")[2]);
                 return LocalDate.of(año, mes, dia);
-            } catch (NumberFormatException e) {
-                return null;
-            } catch (DateTimeException e) {
+            } catch (NumberFormatException | DateTimeException e) {
                 return null;
             }
         }
